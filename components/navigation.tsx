@@ -42,7 +42,7 @@ export function Navigation({ onSearchOpen }: NavigationProps) {
     { href: "#about", label: "About" },
     { href: "#projects", label: "Projects" },
     { href: "#github", label: "GitHub" },
-    { name: "/tools", href: "Tools" },
+    { href: "/tools", href: "Tools" },
     { href: "#contact", label: "Contact" },
   ]
 
