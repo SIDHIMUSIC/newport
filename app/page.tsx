@@ -33,8 +33,6 @@ export default function HomePage() {
       {/* Navigation */}
       <Navigation onSearchOpen={() => setSearchOpen(true)} />
 
-      {/* Featured Project (Top Right Corner) */}
-      <FeaturedProject />
 
       {/* Main Content */}
       <main>
