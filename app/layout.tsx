@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
 import { Analytics } from "@vercel/analytics/react"
 import { ThemeProvider } from "@/components/theme-provider"
+import ChatBot from "@/components/ChatBot"
 import "./globals.css"
 
 const geist = Geist({
@@ -57,6 +58,7 @@ enableSystem
 disableTransitionOnChange
 >
 {children}
+<ChatBot/>    
 </ThemeProvider>
 
     <Analytics />
