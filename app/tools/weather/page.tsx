@@ -10,7 +10,7 @@ export default function WeatherTool(){
   const getWeather = async ()=>{
 
     const res = await fetch(
-      `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=YOUR_API_KEY&units=metric`
+      `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=Y5ece445b397ff6b757c3e2e92edc8a15&units=metric`
     )
 
     const result = await res.json()
