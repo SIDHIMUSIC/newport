@@ -131,10 +131,10 @@ export function ContactSection() {
                   <div>
                     <p className="text-sm text-muted-foreground">Email</p>
                     <a 
-                      href="mailto:hello@0d.com" 
+                      href="mailto:ashukr3384@gmail.com" 
                       className="font-medium hover:text-primary transition-colors"
                     >
-                      hello@0d.com
+                      ashukr3384@gmail.com
                     </a>
                   </div>
                 </div>
@@ -145,7 +145,7 @@ export function ContactSection() {
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground">Location</p>
-                    <p className="font-medium">San Francisco, CA</p>
+                    <p className="font-medium">Bihar Sharif,Bihar, India</p>
                   </div>
                 </div>
 
