@@ -2,12 +2,12 @@
 
 import { useState } from "react"
 
-export default function ToolsPage(){
+export default function Calculator(){
 
   const [display,setDisplay] = useState("")
 
-  const handleClick = (value:string)=>{
-    setDisplay(display + value)
+  const addValue = (val:string)=>{
+    setDisplay(display + val)
   }
 
   const calculate = ()=>{
@@ -22,50 +22,73 @@ export default function ToolsPage(){
     setDisplay("")
   }
 
+  const backspace = ()=>{
+    setDisplay(display.slice(0,-1))
+  }
+
   return(
 
-    <div style={{padding:"40px"}}>
-
-      <h1 style={{fontSize:"36px"}}>Calculator Tool</h1>
+    <div
+      style={{
+        width:"300px",
+        background:"#1e293b",
+        padding:"20px",
+        borderRadius:"10px",
+        color:"white"
+      }}
+    >
 
       <input
         value={display}
         readOnly
         style={{
-          width:"200px",
-          padding:"10px",
-          fontSize:"18px",
-          marginBottom:"10px"
+          width:"100%",
+          padding:"15px",
+          fontSize:"22px",
+          marginBottom:"15px",
+          borderRadius:"6px"
         }}
       />
 
-      <div style={{
-        display:"grid",
-        gridTemplateColumns:"repeat(4,50px)",
-        gap:"5px"
-      }}>
+      <div
+        style={{
+          display:"grid",
+          gridTemplateColumns:"repeat(4,1fr)",
+          gap:"10px"
+        }}
+      >
 
-        <button onClick={()=>handleClick("7")}>7</button>
-        <button onClick={()=>handleClick("8")}>8</button>
-        <button onClick={()=>handleClick("9")}>9</button>
-        <button onClick={()=>handleClick("/")}>÷</button>
+        <button onClick={clear} style={{background:"#ef4444"}}>C</button>
+        <button onClick={backspace}>⌫</button>
+        <button onClick={()=>addValue("%")}>%</button>
+        <button onClick={()=>addValue("/")}>÷</button>
 
-        <button onClick={()=>handleClick("4")}>4</button>
-        <button onClick={()=>handleClick("5")}>5</button>
-        <button onClick={()=>handleClick("6")}>6</button>
-        <button onClick={()=>handleClick("*")}>×</button>
+        <button onClick={()=>addValue("7")}>7</button>
+        <button onClick={()=>addValue("8")}>8</button>
+        <button onClick={()=>addValue("9")}>9</button>
+        <button onClick={()=>addValue("*")}>×</button>
 
-        <button onClick={()=>handleClick("1")}>1</button>
-        <button onClick={()=>handleClick("2")}>2</button>
-        <button onClick={()=>handleClick("3")}>3</button>
-        <button onClick={()=>handleClick("-")}>-</button>
+        <button onClick={()=>addValue("4")}>4</button>
+        <button onClick={()=>addValue("5")}>5</button>
+        <button onClick={()=>addValue("6")}>6</button>
+        <button onClick={()=>addValue("-")}>−</button>
 
-        <button onClick={()=>handleClick("0")}>0</button>
-        <button onClick={()=>handleClick(".")}>.</button>
-        <button onClick={calculate}>=</button>
-        <button onClick={()=>handleClick("+")}>+</button>
+        <button onClick={()=>addValue("1")}>1</button>
+        <button onClick={()=>addValue("2")}>2</button>
+        <button onClick={()=>addValue("3")}>3</button>
+        <button onClick={()=>addValue("+")}>+</button>
 
-        <button onClick={clear}>C</button>
+        <button onClick={()=>addValue("0")}>0</button>
+        <button onClick={()=>addValue(".")}>.</button>
+        <button
+          onClick={calculate}
+          style={{
+            gridColumn:"span 2",
+            background:"#22c55e"
+          }}
+        >
+          =
+        </button>
 
       </div>
 
