@@ -14,11 +14,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: '0d.com | Developer Portfolio',
+  title: 'Harry Portfolio | Full Stack Developer Portfolio',
   description: 'Problem Solver. Code Architect. Building the future through elegant solutions.',
-  generator: 'v0.app',
+  generator: 'ʜᴀʀʀʏ',
   keywords: ['developer', 'portfolio', 'software engineer', 'full-stack', 'web development'],
-  authors: [{ name: '0d' }],
+  authors: [{ name: 'ʜᴀʀʀʏ' }],
   icons: {
     icon: [
       {
