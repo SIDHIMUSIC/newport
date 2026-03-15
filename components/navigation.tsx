@@ -42,12 +42,13 @@ export function Navigation({ onSearchOpen }: NavigationProps) {
     { href: "#about", label: "About" },
     { href: "#projects", label: "Projects" },
     { href: "#github", label: "GitHub" },
+    { name: "/tools", href: "Tools" },
     { href: "#contact", label: "Contact" },
   ]
 
   const socialLinks = [
     { href: "https://github.com", icon: Github, label: "GitHub" },
-    { href: "https://linkedin.com", icon: Linkedin, label: "LinkedIn" },
+    { href: "https://instagram.com", icon: Linkedin, label: "Instagram" },
     { href: "https://twitter.com", icon: Twitter, label: "Twitter" },
   ]
 
