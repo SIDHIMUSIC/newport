@@ -5,6 +5,7 @@ import { useState } from "react"
 export default function Calculator() {
 
 const [display,setDisplay] = useState("")
+const [memory,setMemory] = useState(0)
 
 const add = (v:string)=>{
 setDisplay(display + v)
@@ -24,17 +25,22 @@ try{
 
   let exp = display
 
-  // percentage fix (19+9%)
-  if(exp.includes("%")){
-    const parts = exp.split("+")
-    if(parts.length === 2){
-      const base = Number(parts[0])
-      const percent = Number(parts[1].replace("%",""))
-      const result = base + (base * percent / 100)
-      setDisplay(result.toString())
-      return
-    }
-  }
+  // percentage handling
+  exp = exp.replace(/(\d+)\+(\d+)%/, (_,a,b)=>
+    Number(a) + (Number(a)*Number(b)/100)
+  )
+
+  exp = exp.replace(/(\d+)-(\d+)%/, (_,a,b)=>
+    Number(a) - (Number(a)*Number(b)/100)
+  )
+
+  exp = exp.replace(/(\d+)\*(\d+)%/, (_,a,b)=>
+    Number(a) * (Number(b)/100)
+  )
+
+  exp = exp.replace(/(\d+)\/(\d+)%/, (_,a,b)=>
+    Number(a) / (Number(b)/100)
+  )
 
   setDisplay(eval(exp).toString())
 
@@ -44,10 +50,26 @@ try{
 
 }
 
-const btnStyle = {
-height:"65px",
-fontSize:"20px",
-borderRadius:"12px",
+const memoryAdd = ()=>{
+setMemory(memory + Number(display || 0))
+}
+
+const memorySub = ()=>{
+setMemory(memory - Number(display || 0))
+}
+
+const memoryRecall = ()=>{
+setDisplay(memory.toString())
+}
+
+const memoryClear = ()=>{
+setMemory(0)
+}
+
+const btn = {
+height:"60px",
+fontSize:"18px",
+borderRadius:"10px",
 border:"none",
 cursor:"pointer"
 }
@@ -56,66 +78,60 @@ return(
 
 <div
   style={{
-    width:"350px",
+    width:"360px",
     padding:"25px",
     borderRadius:"20px",
     background:"#1e293b",
-    boxShadow:"0 10px 30px rgba(0,0,0,0.6)",
-    color:"white"
+    color:"white",
+    boxShadow:"0 10px 30px rgba(0,0,0,0.6)"
   }}
 >
 
   <div
     style={{
-      fontSize:"32px",
+      fontSize:"30px",
       textAlign:"right",
-      marginBottom:"20px",
-      minHeight:"40px",
-      background:"#0f172a",
-      padding:"10px",
+      marginBottom:"15px",
+      background:"#020617",
+      padding:"12px",
       borderRadius:"8px"
     }}
   >
     {display || "0"}
   </div>
 
-  <div
-    style={{
-      display:"grid",
-      gridTemplateColumns:"repeat(4,1fr)",
-      gap:"10px"
-    }}
-  >
+  <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:"8px"}}>
 
-    <button style={{...btnStyle,background:"#ef4444"}} onClick={clear}>C</button>
-    <button style={btnStyle} onClick={back}>⌫</button>
-    <button style={btnStyle} onClick={()=>add("%")}>%</button>
-    <button style={{...btnStyle,background:"#f59e0b"}} onClick={()=>add("/")}>÷</button>
+    <button style={btn} onClick={memoryClear}>MC</button>
+    <button style={btn} onClick={memoryRecall}>MR</button>
+    <button style={btn} onClick={memoryAdd}>M+</button>
+    <button style={btn} onClick={memorySub}>M-</button>
 
-    <button style={btnStyle} onClick={()=>add("7")}>7</button>
-    <button style={btnStyle} onClick={()=>add("8")}>8</button>
-    <button style={btnStyle} onClick={()=>add("9")}>9</button>
-    <button style={{...btnStyle,background:"#f59e0b"}} onClick={()=>add("*")}>×</button>
+    <button style={{...btn,background:"#ef4444"}} onClick={clear}>C</button>
+    <button style={btn} onClick={back}>⌫</button>
+    <button style={btn} onClick={()=>add("%")}>%</button>
+    <button style={{...btn,background:"#f59e0b"}} onClick={()=>add("/")}>÷</button>
 
-    <button style={btnStyle} onClick={()=>add("4")}>4</button>
-    <button style={btnStyle} onClick={()=>add("5")}>5</button>
-    <button style={btnStyle} onClick={()=>add("6")}>6</button>
-    <button style={{...btnStyle,background:"#f59e0b"}} onClick={()=>add("-")}>−</button>
+    <button style={btn} onClick={()=>add("7")}>7</button>
+    <button style={btn} onClick={()=>add("8")}>8</button>
+    <button style={btn} onClick={()=>add("9")}>9</button>
+    <button style={{...btn,background:"#f59e0b"}} onClick={()=>add("*")}>×</button>
 
-    <button style={btnStyle} onClick={()=>add("1")}>1</button>
-    <button style={btnStyle} onClick={()=>add("2")}>2</button>
-    <button style={btnStyle} onClick={()=>add("3")}>3</button>
-    <button style={{...btnStyle,background:"#f59e0b"}} onClick={()=>add("+")}>+</button>
+    <button style={btn} onClick={()=>add("4")}>4</button>
+    <button style={btn} onClick={()=>add("5")}>5</button>
+    <button style={btn} onClick={()=>add("6")}>6</button>
+    <button style={{...btn,background:"#f59e0b"}} onClick={()=>add("-")}>−</button>
 
-    <button style={btnStyle} onClick={()=>add("0")}>0</button>
-    <button style={btnStyle} onClick={()=>add(".")}>.</button>
+    <button style={btn} onClick={()=>add("1")}>1</button>
+    <button style={btn} onClick={()=>add("2")}>2</button>
+    <button style={btn} onClick={()=>add("3")}>3</button>
+    <button style={{...btn,background:"#f59e0b"}} onClick={()=>add("+")}>+</button>
+
+    <button style={btn} onClick={()=>add("0")}>0</button>
+    <button style={btn} onClick={()=>add(".")}>.</button>
 
     <button
-      style={{
-        ...btnStyle,
-        gridColumn:"span 2",
-        background:"#22c55e"
-      }}
+      style={{...btn,gridColumn:"span 2",background:"#22c55e"}}
       onClick={calculate}
     >
       =
