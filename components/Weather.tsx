@@ -1,22 +1,23 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 export default function Weather(){
+
+const API="5ece445b397ff6b757c3e2e92edc8a15"
 
 const [city,setCity] = useState("")
 const [weather,setWeather] = useState<any>(null)
 const [error,setError] = useState("")
 
-const getWeather = async () => {
+const getWeatherByCity = async (cityName:string)=>{
 
 try{
 
   setError("")
-  setWeather(null)
 
   const res = await fetch(
-    `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=5ece445b397ff6b757c3e2e92edc8a15&units=metric`
+    `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${API}&units=metric`
   )
 
   const data = await res.json()
@@ -34,113 +35,146 @@ try{
 
 }
 
+const getLocationWeather = ()=>{
+
+navigator.geolocation.getCurrentPosition(async (pos)=>{
+
+  const lat=pos.coords.latitude
+  const lon=pos.coords.longitude
+
+  const res = await fetch(
+    `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API}&units=metric`
+  )
+
+  const data = await res.json()
+
+  setWeather(data)
+
+})
+
+}
+
+useEffect(()=>{
+getLocationWeather()
+},[])
+
 return(
 
 <div
   style={{
-    background:"linear-gradient(135deg,#0f172a,#020617)",
-    padding:"40px",
-    borderRadius:"20px",
-    width:"420px",
-    textAlign:"center",
-    color:"white",
-    boxShadow:"0 0 30px rgba(56,189,248,0.4)"
+    minHeight:"100vh",
+    display:"flex",
+    justifyContent:"center",
+    alignItems:"center",
+    background:"linear-gradient(-45deg,#020617,#0f172a,#1e293b,#020617)",
+    backgroundSize:"400% 400%",
+    animation:"gradient 15s ease infinite",
+    color:"white"
   }}
 >
 
-  <h1
+  <div
     style={{
-      fontSize:"32px",
-      marginBottom:"25px",
-      color:"#38bdf8",
-      textShadow:"0 0 15px #38bdf8"
+      padding:"40px",
+      borderRadius:"20px",
+      background:"rgba(2,6,23,0.8)",
+      textAlign:"center",
+      width:"400px",
+      boxShadow:"0 0 25px rgba(56,189,248,0.4)"
     }}
   >
-    Weather Tool
-  </h1>
 
-  <div>
-
-    <input
-      placeholder="Enter city"
-      value={city}
-      onChange={(e)=>setCity(e.target.value)}
+    <h1
       style={{
-        padding:"12px",
-        width:"65%",
-        borderRadius:"10px",
-        border:"1px solid #38bdf8",
-        background:"#020617",
-        color:"white",
-        outline:"none",
-        boxShadow:"0 0 10px rgba(56,189,248,0.5)"
-      }}
-    />
-
-    <button
-      onClick={getWeather}
-      style={{
-        marginLeft:"10px",
-        padding:"12px 16px",
-        borderRadius:"10px",
-        border:"none",
-        background:"#38bdf8",
-        color:"#020617",
-        fontWeight:"bold",
-        cursor:"pointer",
-        boxShadow:"0 0 12px #38bdf8"
+        fontSize:"32px",
+        marginBottom:"20px",
+        color:"#38bdf8"
       }}
     >
-      Search
-    </button>
+      Weather Tool
+    </h1>
 
-  </div>
+    <div>
 
-  {error && (
-    <p style={{color:"red",marginTop:"20px"}}>
-      {error}
-    </p>
-  )}
-
-  {weather && (
-
-    <div
-      style={{
-        marginTop:"30px",
-        padding:"20px",
-        borderRadius:"15px",
-        background:"rgba(2,6,23,0.8)",
-        boxShadow:"0 0 20px rgba(56,189,248,0.3)"
-      }}
-    >
-
-      <h2 style={{fontSize:"28px"}}>
-        {weather.name}
-      </h2>
-
-      <h1
+      <input
+        placeholder="Enter city"
+        value={city}
+        onChange={(e)=>setCity(e.target.value)}
         style={{
-          fontSize:"48px",
-          margin:"10px 0",
-          color:"#38bdf8"
+          padding:"12px",
+          borderRadius:"10px",
+          border:"1px solid #38bdf8",
+          background:"#020617",
+          color:"white"
+        }}
+      />
+
+      <button
+        onClick={()=>getWeatherByCity(city)}
+        style={{
+          marginLeft:"10px",
+          padding:"12px",
+          borderRadius:"10px",
+          border:"none",
+          background:"#38bdf8",
+          cursor:"pointer"
         }}
       >
-        {weather.main.temp}°C
-      </h1>
-
-      <p style={{fontSize:"20px"}}>
-        ☁ {weather.weather[0].main}
-      </p>
-
-      <p style={{marginTop:"10px"}}>
-        💧 Humidity: {weather.main.humidity}%
-      </p>
+        Search
+      </button>
 
     </div>
 
-  )}
+    {error && (
+      <p style={{color:"red",marginTop:"20px"}}>
+        {error}
+      </p>
+    )}
+
+    {weather && (
+
+      <div style={{marginTop:"30px"}}>
+
+        <h2>{weather.name}</h2>
+
+        <img
+          src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}
+        />
+
+        <h1 style={{fontSize:"50px"}}>
+          {weather.main.temp}°C
+        </h1>
+
+        <p style={{fontSize:"20px"}}>
+          {weather.weather[0].main}
+        </p>
+
+        <p>
+          💧 Humidity: {weather.main.humidity}%
+        </p>
+
+      </div>
+
+    )}
+
+  </div>
+
+  <style jsx>{`
+
+    @keyframes gradient {
+
+      0% {background-position:0% 50%}
+
+      50% {background-position:100% 50%}
+
+      100% {background-position:0% 50%}
+
+    }
+
+  `}</style>
 
 </div>
 
 )
+
 }
