@@ -92,7 +92,7 @@ export function HeroSection() {
               className="glow-sm hover:glow transition-all"
               asChild
             >
-              <Link href="/projects">
+              <Link href="#projects">
                 View My Work
               </Link>
             </Button>
