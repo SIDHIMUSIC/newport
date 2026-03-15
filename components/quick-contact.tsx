@@ -41,7 +41,10 @@ export function QuickContact() {
   return (
     <>
       {/* Floating Button */}
-      
+<button
+  onClick={() => setIsOpen(true)}
+  className={cn(
+    "fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-primary text-primary-foreground shadow-lg",
 
       {/* Quick Contact Panel */}
       <div
