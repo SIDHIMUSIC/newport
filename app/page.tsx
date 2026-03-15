@@ -12,6 +12,7 @@ import { Footer } from "@/components/footer"
 import { QuickContact } from "@/components/quick-contact"
 import { SearchModal } from "@/components/search-modal"
 import { FeaturedProject } from "@/components/featured-project"
+import { ChatBot } from "@/components/ChatBot"
 
 export default function HomePage() {
   const [searchOpen, setSearchOpen] = useState(false)
@@ -60,6 +61,9 @@ export default function HomePage() {
 
       {/* Floating Quick Contact */}
       <QuickContact />
+
+      {/* AI ChatBot */}
+      <ChatBot />
 
       {/* Search Modal */}
       <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
