@@ -14,7 +14,7 @@ const [dislikes,setDislikes]=useState(0)
 const searchWeather=async()=>{
 
 const res=await fetch(
-"https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API}&units=metric"
+`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API}&units=metric`
 )
 
 const weather=await res.json()
@@ -33,19 +33,27 @@ flexDirection:"column",
 alignItems:"center",
 paddingTop:"80px",
 color:"white"
-}}><h1 style={{
+}}>
+
+<h1 style={{
 fontSize:"40px",
 marginBottom:"10px",
 color:"#38bdf8"
 }}>
 ʜᴀʀʀʏ Weather Tool
-</h1><p style={{opacity:0.7}}>
+</h1>
+
+<p style={{opacity:0.7}}>
 Live Weather Report
-</p><div style={{
+</p>
+
+<div style={{
 marginTop:"30px",
 display:"flex",
 gap:"10px"
-}}><input
+}}>
+
+<input
 value={city}
 onChange={(e)=>setCity(e.target.value)}
 placeholder="Enter city"
@@ -67,13 +75,13 @@ border:"none",
 background:"#38bdf8",
 cursor:"pointer"
 }}
-
-«»
-
+>
 Search
 </button>
 
-</div>{data && data.main && (
+</div>
+
+{data && data.main && (
 
 <div style={{
 marginTop:"40px",
@@ -83,27 +91,44 @@ background:"rgba(15,23,42,0.8)",
 boxShadow:"0 0 30px rgba(56,189,248,0.5)",
 textAlign:"center",
 width:"420px"
-}}><h2>{data.name}</h2><img
-src={"https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png"}
+}}>
+
+<h2>{data.name}</h2>
+
+<img
+src={`https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`}
 />
 
 <h1 style={{fontSize:"60px"}}>
 {data.main.temp}°C
-</h1><p>{data.weather[0].main}</p><p>
+</h1>
+
+<p>{data.weather[0].main}</p>
+
+<p>
 Humidity {data.main.humidity}%
-</p></div>)}
+</p>
+
+</div>
+)}
 
 <div style={{
 marginTop:"40px",
 textAlign:"center"
-}}><p>
+}}>
+
+<p>
 If you loved and enjoyed this
-</p><div style={{
+</p>
+
+<div style={{
 display:"flex",
 gap:"20px",
 justifyContent:"center",
 marginTop:"10px"
-}}><button
+}}>
+
+<button
 onClick={()=>setLikes(likes+1)}
 style={{
 padding:"10px 20px",
@@ -112,9 +137,7 @@ background:"#22c55e",
 border:"none",
 cursor:"pointer"
 }}
-
-«»
-
+>
 👍 {likes}
 </button>
 
@@ -127,12 +150,16 @@ background:"#ef4444",
 border:"none",
 cursor:"pointer"
 }}
-
-«»
-
+>
 👎 {dislikes}
 </button>
 
-</div></div></div>)
+</div>
+
+</div>
+
+</div>
+
+)
 
 }
