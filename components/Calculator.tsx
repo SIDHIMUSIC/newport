@@ -10,14 +10,6 @@ const add = (v:string)=>{
 setDisplay(display + v)
 }
 
-const calculate = ()=>{
-try{
-setDisplay(eval(display).toString())
-}catch{
-setDisplay("Error")
-}
-}
-
 const clear = ()=>{
 setDisplay("")
 }
@@ -26,10 +18,36 @@ const back = ()=>{
 setDisplay(display.slice(0,-1))
 }
 
+const calculate = ()=>{
+
+try{
+
+  let exp = display
+
+  // percentage fix (19+9%)
+  if(exp.includes("%")){
+    const parts = exp.split("+")
+    if(parts.length === 2){
+      const base = Number(parts[0])
+      const percent = Number(parts[1].replace("%",""))
+      const result = base + (base * percent / 100)
+      setDisplay(result.toString())
+      return
+    }
+  }
+
+  setDisplay(eval(exp).toString())
+
+}catch{
+  setDisplay("Error")
+}
+
+}
+
 const btnStyle = {
 height:"65px",
 fontSize:"20px",
-borderRadius:"50%",
+borderRadius:"12px",
 border:"none",
 cursor:"pointer"
 }
@@ -38,23 +56,24 @@ return(
 
 <div
   style={{
-    width:"340px",
+    width:"350px",
     padding:"25px",
-    borderRadius:"25px",
-    backdropFilter:"blur(20px)",
-    background:"rgba(30,41,59,0.8)",
-    boxShadow:"0 15px 40px rgba(0,0,0,0.6)",
+    borderRadius:"20px",
+    background:"#1e293b",
+    boxShadow:"0 10px 30px rgba(0,0,0,0.6)",
     color:"white"
   }}
 >
 
   <div
     style={{
-      fontSize:"34px",
+      fontSize:"32px",
       textAlign:"right",
-      marginBottom:"25px",
+      marginBottom:"20px",
       minHeight:"40px",
-      overflow:"hidden"
+      background:"#0f172a",
+      padding:"10px",
+      borderRadius:"8px"
     }}
   >
     {display || "0"}
@@ -64,7 +83,7 @@ return(
     style={{
       display:"grid",
       gridTemplateColumns:"repeat(4,1fr)",
-      gap:"12px"
+      gap:"10px"
     }}
   >
 
@@ -88,9 +107,19 @@ return(
     <button style={btnStyle} onClick={()=>add("3")}>3</button>
     <button style={{...btnStyle,background:"#f59e0b"}} onClick={()=>add("+")}>+</button>
 
-    <button style={{...btnStyle,gridColumn:"span 2",borderRadius:"30px"}} onClick={()=>add("0")}>0</button>
+    <button style={btnStyle} onClick={()=>add("0")}>0</button>
     <button style={btnStyle} onClick={()=>add(".")}>.</button>
-    <button style={{...btnStyle,background:"#22c55e"}} onClick={calculate}>=</button>
+
+    <button
+      style={{
+        ...btnStyle,
+        gridColumn:"span 2",
+        background:"#22c55e"
+      }}
+      onClick={calculate}
+    >
+      =
+    </button>
 
   </div>
 
