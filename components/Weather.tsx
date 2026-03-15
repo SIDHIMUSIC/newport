@@ -1,180 +1,138 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 
 export default function Weather(){
 
 const API="5ece445b397ff6b757c3e2e92edc8a15"
 
-const [city,setCity] = useState("")
-const [weather,setWeather] = useState<any>(null)
-const [error,setError] = useState("")
+const [city,setCity]=useState("")
+const [data,setData]=useState<any>(null)
+const [likes,setLikes]=useState(0)
+const [dislikes,setDislikes]=useState(0)
 
-const getWeatherByCity = async (cityName:string)=>{
+const searchWeather=async()=>{
 
-try{
+const res=await fetch(
+"https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API}&units=metric"
+)
 
-  setError("")
+const weather=await res.json()
 
-  const res = await fetch(
-    `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${API}&units=metric`
-  )
-
-  const data = await res.json()
-
-  if(data.cod !== 200){
-    setError("City not found")
-    return
-  }
-
-  setWeather(data)
-
-}catch{
-  setError("Weather fetch failed")
-}
+setData(weather)
 
 }
-
-const getLocationWeather = ()=>{
-
-navigator.geolocation.getCurrentPosition(async (pos)=>{
-
-  const lat=pos.coords.latitude
-  const lon=pos.coords.longitude
-
-  const res = await fetch(
-    `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API}&units=metric`
-  )
-
-  const data = await res.json()
-
-  setWeather(data)
-
-})
-
-}
-
-useEffect(()=>{
-getLocationWeather()
-},[])
 
 return(
 
-<div
-  style={{
-    minHeight:"100vh",
-    display:"flex",
-    justifyContent:"center",
-    alignItems:"center",
-    background:"linear-gradient(-45deg,#020617,#0f172a,#1e293b,#020617)",
-    backgroundSize:"400% 400%",
-    animation:"gradient 15s ease infinite",
-    color:"white"
-  }}
->
+<div style={{
+minHeight:"100vh",
+background:"linear-gradient(135deg,#020617,#0f172a,#020617)",
+display:"flex",
+flexDirection:"column",
+alignItems:"center",
+paddingTop:"80px",
+color:"white"
+}}><h1 style={{
+fontSize:"40px",
+marginBottom:"10px",
+color:"#38bdf8"
+}}>
+ʜᴀʀʀʏ Weather Tool
+</h1><p style={{opacity:0.7}}>
+Live Weather Report
+</p><div style={{
+marginTop:"30px",
+display:"flex",
+gap:"10px"
+}}><input
+value={city}
+onChange={(e)=>setCity(e.target.value)}
+placeholder="Enter city"
+style={{
+padding:"12px",
+borderRadius:"10px",
+border:"1px solid #38bdf8",
+background:"#020617",
+color:"white"
+}}
+/>
 
-  <div
-    style={{
-      padding:"40px",
-      borderRadius:"20px",
-      background:"rgba(2,6,23,0.8)",
-      textAlign:"center",
-      width:"400px",
-      boxShadow:"0 0 25px rgba(56,189,248,0.4)"
-    }}
-  >
+<button
+onClick={searchWeather}
+style={{
+padding:"12px 20px",
+borderRadius:"10px",
+border:"none",
+background:"#38bdf8",
+cursor:"pointer"
+}}
 
-    <h1
-      style={{
-        fontSize:"32px",
-        marginBottom:"20px",
-        color:"#38bdf8"
-      }}
-    >
-      Weather Tool
-    </h1>
+«»
 
-    <div>
+Search
+</button>
 
-      <input
-        placeholder="Enter city"
-        value={city}
-        onChange={(e)=>setCity(e.target.value)}
-        style={{
-          padding:"12px",
-          borderRadius:"10px",
-          border:"1px solid #38bdf8",
-          background:"#020617",
-          color:"white"
-        }}
-      />
+</div>{data && data.main && (
 
-      <button
-        onClick={()=>getWeatherByCity(city)}
-        style={{
-          marginLeft:"10px",
-          padding:"12px",
-          borderRadius:"10px",
-          border:"none",
-          background:"#38bdf8",
-          cursor:"pointer"
-        }}
-      >
-        Search
-      </button>
+<div style={{
+marginTop:"40px",
+padding:"30px",
+borderRadius:"20px",
+background:"rgba(15,23,42,0.8)",
+boxShadow:"0 0 30px rgba(56,189,248,0.5)",
+textAlign:"center",
+width:"420px"
+}}><h2>{data.name}</h2><img
+src={"https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png"}
+/>
 
-    </div>
+<h1 style={{fontSize:"60px"}}>
+{data.main.temp}°C
+</h1><p>{data.weather[0].main}</p><p>
+Humidity {data.main.humidity}%
+</p></div>)}
 
-    {error && (
-      <p style={{color:"red",marginTop:"20px"}}>
-        {error}
-      </p>
-    )}
+<div style={{
+marginTop:"40px",
+textAlign:"center"
+}}><p>
+If you loved and enjoyed this
+</p><div style={{
+display:"flex",
+gap:"20px",
+justifyContent:"center",
+marginTop:"10px"
+}}><button
+onClick={()=>setLikes(likes+1)}
+style={{
+padding:"10px 20px",
+borderRadius:"10px",
+background:"#22c55e",
+border:"none",
+cursor:"pointer"
+}}
 
-    {weather && (
+«»
 
-      <div style={{marginTop:"30px"}}>
+👍 {likes}
+</button>
 
-        <h2>{weather.name}</h2>
+<button
+onClick={()=>setDislikes(dislikes+1)}
+style={{
+padding:"10px 20px",
+borderRadius:"10px",
+background:"#ef4444",
+border:"none",
+cursor:"pointer"
+}}
 
-        <img
-          src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}
-        />
+«»
 
-        <h1 style={{fontSize:"50px"}}>
-          {weather.main.temp}°C
-        </h1>
+👎 {dislikes}
+</button>
 
-        <p style={{fontSize:"20px"}}>
-          {weather.weather[0].main}
-        </p>
-
-        <p>
-          💧 Humidity: {weather.main.humidity}%
-        </p>
-
-      </div>
-
-    )}
-
-  </div>
-
-  <style jsx>{`
-
-    @keyframes gradient {
-
-      0% {background-position:0% 50%}
-
-      50% {background-position:100% 50%}
-
-      100% {background-position:0% 50%}
-
-    }
-
-  `}</style>
-
-</div>
-
-)
+</div></div></div>)
 
 }
