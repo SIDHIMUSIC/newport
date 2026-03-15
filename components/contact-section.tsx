@@ -66,16 +66,20 @@ return Object.keys(newErrors).length === 0
 }
 
 const handleSubmit = (e: React.FormEvent) => {
-e.preventDefault()
+  e.preventDefault()
 
-if (!validateForm()) return
+  if (!validateForm()) return
 
-const { name, email, subject, message } = formData
+  const { name, email, subject, message } = formData
 
-const mailtoLink =
-mailto:ashukr3384@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
-Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}
-)}
+  const mailtoLink = `mailto:ashukr3384@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
+`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
+)}`
+
+  window.location.href = mailtoLink
+
+  setIsSubmitted(true)
+}
 
 window.location.href = mailtoLink
 
