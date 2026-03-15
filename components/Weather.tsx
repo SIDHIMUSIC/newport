@@ -34,80 +34,80 @@ return(
 <div style={{
 
 minHeight:"100vh",
+width:"100%",
 background:"linear-gradient(180deg,#020617,#0f172a,#020617)",
-overflow:"hidden",
-position:"relative",
-color:"white",
 display:"flex",
 flexDirection:"column",
+justifyContent:"center",
 alignItems:"center",
-paddingTop:"100px"
+color:"white",
+position:"relative",
+overflow:"hidden"
 
 }}>
 
-{/* CLOCK */}
+{/* Neon Clock */}
 
 <div style={{
 
 position:"absolute",
-top:"20px",
-right:"30px",
-fontSize:"28px",
+top:"25px",
+right:"40px",
+fontSize:"36px",
+fontFamily:"monospace",
 color:"#ff2d55",
-textShadow:"0 0 10px red"
+textShadow:"0 0 10px red,0 0 20px red"
 
 }}>
 {time}
 </div>
 
 
-{/* CLOUDS */}
-
-<div style={{
-position:"absolute",
-top:"60px",
-width:"200%",
-height:"200px",
-background:"url('https://i.ibb.co/7QpKsCX/clouds.png') repeat-x",
-animation:"cloudMove 60s linear infinite",
-opacity:0.4
-}}></div>
-
-
-{/* SUN */}
+{/* Sun background */}
 
 <div style={{
 
 position:"absolute",
-top:"80px",
-left:"80px",
-width:"120px",
-height:"120px",
-background:"radial-gradient(circle,#facc15,#f97316)",
+top:"120px",
+right:"150px",
+width:"180px",
+height:"180px",
 borderRadius:"50%",
-boxShadow:"0 0 60px #facc15",
-animation:"spin 20s linear infinite"
+background:"radial-gradient(circle,#fde047,#facc15,#f97316)",
+boxShadow:"0 0 120px #facc15",
+opacity:0.7,
+zIndex:0
 
 }}></div>
 
+
+{/* Main Weather Card */}
+
+<div style={{
+
+width:"520px",
+padding:"40px",
+borderRadius:"20px",
+background:"rgba(15,23,42,0.85)",
+boxShadow:"0 0 60px rgba(56,189,248,0.6)",
+textAlign:"center",
+zIndex:1
+
+}}>
 
 <h1 style={{
-
-fontSize:"42px",
+fontSize:"40px",
 color:"#38bdf8",
-marginBottom:"10px"
-
+marginBottom:"20px"
 }}>
 ʜᴀʀʀʏ Weather Tool
 </h1>
 
 
 <div style={{
-
 display:"flex",
 gap:"10px",
-marginTop:"20px"
-
+justifyContent:"center"
 }}>
 
 <input
@@ -118,11 +118,13 @@ placeholder="Enter city"
 
 style={{
 
-padding:"12px",
+padding:"14px",
+width:"260px",
 borderRadius:"10px",
 border:"1px solid #38bdf8",
 background:"#020617",
-color:"white"
+color:"white",
+fontSize:"16px"
 
 }}
 
@@ -134,11 +136,12 @@ onClick={searchWeather}
 
 style={{
 
-padding:"12px 20px",
+padding:"14px 25px",
 borderRadius:"10px",
-background:"#38bdf8",
 border:"none",
-cursor:"pointer"
+background:"#38bdf8",
+cursor:"pointer",
+fontSize:"16px"
 
 }}
 
@@ -152,28 +155,25 @@ Search
 {data && data.main && (
 
 <div style={{
-
-marginTop:"40px",
-padding:"30px",
-borderRadius:"20px",
-background:"rgba(15,23,42,0.9)",
-boxShadow:"0 0 40px #38bdf8",
-textAlign:"center",
-width:"420px"
-
+marginTop:"35px"
 }}>
 
-<h2>{data.name}</h2>
+<h2 style={{fontSize:"26px"}}>{data.name}</h2>
 
 <img
 src={`https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`}
 />
 
-<h1 style={{fontSize:"64px"}}>
+<h1 style={{
+fontSize:"70px",
+margin:"10px 0"
+}}>
 {data.main.temp}°C
 </h1>
 
-<p>{data.weather[0].main}</p>
+<p style={{fontSize:"20px"}}>
+{data.weather[0].main}
+</p>
 
 <p>
 Humidity {data.main.humidity}%
@@ -183,23 +183,7 @@ Humidity {data.main.humidity}%
 
 )}
 
-<style jsx>{`
-
-@keyframes cloudMove{
-
-0%{transform:translateX(0)}
-100%{transform:translateX(-50%)}
-
-}
-
-@keyframes spin{
-
-0%{transform:rotate(0deg)}
-100%{transform:rotate(360deg)}
-
-}
-
-`}</style>
+</div>
 
 </div>
 
