@@ -6,9 +6,7 @@ try{
 
 const { message } = await req.json()
 
-const res = await fetch(
-"https://openrouter.ai/api/v1/chat/completions",
-{
+const res = await fetch("https://openrouter.ai/api/v1/chat/completions",{
 method:"POST",
 headers:{
 "Content-Type":"application/json",
@@ -21,16 +19,19 @@ messages:[
 {role:"user",content:message}
 ]
 })
-}
-)
+})
 
 const data = await res.json()
 
+console.log("OPENROUTER RESPONSE:", data)
+
 return NextResponse.json({
-reply:data.choices?.[0]?.message?.content || "AI failed"
+reply:data.choices?.[0]?.message?.content || data.error?.message || "AI failed"
 })
 
-}catch{
+}catch(e){
+
+console.log(e)
 
 return NextResponse.json({
 reply:"Server error"
