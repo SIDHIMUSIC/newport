@@ -5,6 +5,7 @@ import { useState } from "react"
 export default function ChatBot() {
 
 const [open,setOpen] = useState(false)
+const [typing,setTyping] = useState(false)
 
 const [messages,setMessages] = useState([
 {role:"bot",text:"Hi 👋 I'm Harry's AI assistant. How can I help you?"}
@@ -22,18 +23,20 @@ const newMessages = [
 ]
 
 setMessages(newMessages)
+setTyping(true)
 
 setTimeout(()=>{
+
+setTyping(false)
 
 setMessages([
 ...newMessages,
 {role:"bot",text:"I'm a demo AI assistant. Soon I will have real AI replies."}
 ])
 
-},600)
+},1200)
 
 setInput("")
-
 }
 
 return(
@@ -156,6 +159,31 @@ display:"inline-block"
 </div>
 
 ))}
+
+{/* TYPING ANIMATION */}
+
+{typing && (
+
+<div style={{marginBottom:"10px"}}>
+
+<span
+style={{
+background:"#1e293b",
+padding:"8px 12px",
+borderRadius:"12px",
+display:"inline-block"
+}}
+>
+
+<span style={{animation:"blink 1s infinite"}}>●</span>
+<span style={{animation:"blink 1s infinite 0.2s",marginLeft:"4px"}}>●</span>
+<span style={{animation:"blink 1s infinite 0.4s",marginLeft:"4px"}}>●</span>
+
+</span>
+
+</div>
+
+)}
 
 </div>
 
