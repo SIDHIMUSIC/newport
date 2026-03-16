@@ -4,8 +4,6 @@ import { useState } from "react"
 
 export default function ChatBot(){
 
-const API_KEY="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"
-
 const [open,setOpen]=useState(false)
 const [typing,setTyping]=useState(false)
 
@@ -31,35 +29,23 @@ setTyping(true)
 
 try{
 
-const res=await fetch(
-"https://openrouter.ai/api/v1/chat/completions",
-{
+const res = await fetch("/api/chat",{
 method:"POST",
 headers:{
-"Content-Type":"application/json",
-"Authorization":`Bearer ${API_KEY}`,
-"HTTP-Referer":"https://your-site.com",
-"X-Title":"Harry AI Assistant"
+"Content-Type":"application/json"
 },
 body:JSON.stringify({
-model:"deepseek/deepseek-chat",
-messages:[
-{role:"system",content:"You are Harry's AI assistant on his website."},
-{role:"user",content:userMsg}
-]
+message:userMsg
 })
-}
-)
+})
 
-const data=await res.json()
-
-const reply=data.choices?.[0]?.message?.content || "AI error"
+const data = await res.json()
 
 setTyping(false)
 
 setMessages(prev=>[
 ...prev,
-{role:"bot",text:reply}
+{role:"bot",text:data.reply}
 ])
 
 }catch{
@@ -68,7 +54,7 @@ setTyping(false)
 
 setMessages(prev=>[
 ...prev,
-{role:"bot",text:"Error connecting to AI"}
+{role:"bot",text:"AI server error"}
 ])
 
 }
@@ -100,9 +86,7 @@ zIndex:999
 }}
 >
 
-<svg width="28" height="28" viewBox="0 0 24 24" fill="white">
-<path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/>
-</svg>
+💬
 
 </div>
 
@@ -137,8 +121,7 @@ background:"#0f172a",
 color:"white",
 fontWeight:"bold",
 display:"flex",
-justifyContent:"space-between",
-alignItems:"center"
+justifyContent:"space-between"
 }}
 >
 
@@ -160,7 +143,7 @@ cursor:"pointer"
 </div>
 
 
-{/* MESSAGE AREA */}
+{/* MESSAGES */}
 
 <div
 style={{
@@ -199,25 +182,19 @@ maxWidth:"80%"
 
 ))}
 
-
-{/* TYPING ANIMATION */}
-
 {typing && (
 
-<div style={{marginBottom:"10px"}}>
+<div>
 
 <span
 style={{
 background:"#1e293b",
 padding:"8px 12px",
-borderRadius:"12px",
-display:"inline-block"
+borderRadius:"12px"
 }}
 >
 
-<span>●</span>
-<span style={{marginLeft:"4px"}}>●</span>
-<span style={{marginLeft:"4px"}}>●</span>
+Typing...
 
 </span>
 
