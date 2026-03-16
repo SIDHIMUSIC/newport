@@ -17,7 +17,7 @@ export async function POST(req: Request) {
       body:JSON.stringify({
         model:"meta-llama/llama-3-8b-instruct",
         messages:[
-          {role:"system",content:"You are Harry's helpful AI assistant."},
+          {role:"system",content:"You are Harry's AI assistant."},
           {role:"user",content:message}
         ]
       })
@@ -25,18 +25,18 @@ export async function POST(req: Request) {
 
     const data = await res.json()
 
-    console.log("AI response:",data)
+    console.log("OPENROUTER RESPONSE:", data)
 
     return NextResponse.json({
-      reply:data.choices?.[0]?.message?.content || "AI failed"
+      reply:data.choices?.[0]?.message?.content || data.error?.message || "AI failed"
     })
 
-  } catch (err) {
+  } catch (error) {
 
-    console.log(err)
+    console.log("SERVER ERROR:",error)
 
     return NextResponse.json({
-      reply:"Server AI error"
+      reply:"Server error"
     })
 
   }
