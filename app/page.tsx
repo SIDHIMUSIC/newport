@@ -12,7 +12,7 @@ import { Footer } from "@/components/footer"
 import { QuickContact } from "@/components/quick-contact"
 import { SearchModal } from "@/components/search-modal"
 import { FeaturedProject } from "@/components/featured-project"
-import { ChatBot } from "@/components/ChatBot"
+import  ChatBot  from "@/components/ChatBot"
 
 export default function HomePage() {
   const [searchOpen, setSearchOpen] = useState(false)
