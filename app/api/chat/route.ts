@@ -4,14 +4,16 @@ export async function POST(req: Request) {
 
 const { message } = await req.json()
 
-const res = await fetch("https://api.openai.com/v1/chat/completions",{
+const res = await fetch("https://openrouter.ai/api/v1/chat/completions",{
 method:"POST",
 headers:{
 "Content-Type":"application/json",
-"Authorization":`Bearer ${process.env.OPENAI_API_KEY}`
+"Authorization":`Bearer ${process.env.OPENROUTER_API_KEY}`,
+"HTTP-Referer":"https://your-site.com",
+"X-Title":"Harry AI Assistant"
 },
 body:JSON.stringify({
-model:"gpt-4o-mini",
+model:"deepseek/deepseek-chat",
 messages:[
 {role:"system",content:"You are Harry's AI assistant."},
 {role:"user",content:message}
