@@ -27,7 +27,7 @@ setTimeout(()=>{
 
 setMessages([
 ...newMessages,
-{role:"bot",text:"I'm a demo assistant. Soon I will have real AI replies."}
+{role:"bot",text:"I'm a demo AI assistant. Soon I will have real AI replies."}
 ])
 
 },600)
@@ -40,7 +40,7 @@ return(
 
 <>
 
-{/* Floating Button */}
+{/* META STYLE FLOATING AI BUTTON */}
 
 <div
 onClick={()=>setOpen(!open)}
@@ -48,30 +48,33 @@ style={{
 position:"fixed",
 bottom:"30px",
 left:"30px",
-width:"60px",
-height:"60px",
+width:"64px",
+height:"64px",
 borderRadius:"50%",
-background:"#22c55e",
+background:"linear-gradient(135deg,#00f5a0,#00d9f5,#7c3aed)",
 display:"flex",
 alignItems:"center",
 justifyContent:"center",
 cursor:"pointer",
-boxShadow:"0 0 20px #22c55e",
 zIndex:999,
-fontSize:"22px"
+boxShadow:"0 0 25px rgba(0,255,200,0.8)"
 }}
 >
-💬
+
+<svg width="30" height="30" viewBox="0 0 24 24" fill="white">
+<path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/>
+</svg>
+
 </div>
 
-{/* Chat Window */}
+{/* CHAT WINDOW */}
 
 {open && (
 
 <div
 style={{
 position:"fixed",
-bottom:"100px",
+bottom:"110px",
 left:"30px",
 width:"320px",
 height:"420px",
@@ -85,7 +88,7 @@ zIndex:999
 }}
 >
 
-{/* Header */}
+{/* HEADER */}
 
 <div
 style={{
@@ -116,7 +119,7 @@ cursor:"pointer"
 
 </div>
 
-{/* Messages */}
+{/* MESSAGES */}
 
 <div
 style={{
@@ -156,7 +159,7 @@ display:"inline-block"
 
 </div>
 
-{/* Input */}
+{/* INPUT */}
 
 <div
 style={{
