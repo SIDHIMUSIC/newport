@@ -4,7 +4,7 @@ import { useState } from "react"
 
 export default function ChatBot(){
 
-const API_KEY="YOUR_OPENROUTER_API_KEY"
+const API_KEY="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"
 
 const [open,setOpen]=useState(false)
 const [typing,setTyping]=useState(false)
