@@ -11,6 +11,7 @@ const [messages,setMessages] = useState([
 ])
 
 const [input,setInput] = useState("")
+const [loading,setLoading] = useState(false)
 
 const sendMessage = async ()=>{
 
@@ -24,6 +25,7 @@ setMessages(prev=>[
 ])
 
 setInput("")
+setLoading(true)
 
 try{
 
@@ -53,16 +55,18 @@ setMessages(prev=>[
 
 }
 
+setLoading(false)
+
 }
 
 return(
 
 <>
 
-{/* Floating button */}
+{/* Floating Button */}
 
 <div
-onClick={()=>setOpen(true)}
+onClick={()=>setOpen(!open)}
 style={{
 position:"fixed",
 bottom:"30px",
@@ -83,7 +87,6 @@ zIndex:999
 💬
 
 </div>
-
 
 {/* Chat Window */}
 
@@ -137,7 +140,6 @@ cursor:"pointer"
 
 </div>
 
-
 {/* Messages */}
 
 <div
@@ -175,8 +177,19 @@ maxWidth:"80%"
 </div>
 ))}
 
+{loading && (
+<div style={{marginTop:"10px"}}>
+<span style={{
+background:"#1e293b",
+padding:"8px 12px",
+borderRadius:"12px"
+}}>
+Typing...
+</span>
 </div>
+)}
 
+</div>
 
 {/* Input */}
 
