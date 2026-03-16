@@ -6,7 +6,7 @@ export async function POST(req: Request) {
 
     const { message } = await req.json()
 
-    const res = await fetch("https://openrouter.ai/api/v1/chat/completions",{
+    const response = await fetch("https://openrouter.ai/api/v1/chat/completions",{
       method:"POST",
       headers:{
         "Content-Type":"application/json",
@@ -17,19 +17,29 @@ export async function POST(req: Request) {
       body:JSON.stringify({
         model:"deepseek/deepseek-chat",
         messages:[
-          {role:"system",content:"You are Harry's AI assistant."},
-          {role:"user",content:message}
+          { role:"system", content:"You are Harry's AI assistant on Harry's portfolio website." },
+          { role:"user", content:message }
         ]
       })
     })
 
-    const data = await res.json()
+    const data = await response.json()
+
+    console.log("OpenRouter Response:", data)
+
+    if (!response.ok) {
+      return NextResponse.json({
+        reply: data.error?.message || "OpenRouter API error"
+      })
+    }
 
     return NextResponse.json({
-      reply:data.choices?.[0]?.message?.content || "AI failed"
+      reply: data.choices?.[0]?.message?.content || "AI response empty"
     })
 
-  } catch {
+  } catch (error) {
+
+    console.log("SERVER ERROR:", error)
 
     return NextResponse.json({
       reply:"Server error"
