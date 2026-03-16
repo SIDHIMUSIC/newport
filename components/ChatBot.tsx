@@ -1,191 +1,188 @@
 "use client"
 
-import { useState,useEffect } from "react"
+import { useState } from "react"
 
-export default function Weather(){
+export default function ChatBot() {
 
-const API="5ece445b397ff6b757c3e2e92edc8a15"
+const [open,setOpen] = useState(false)
+const [messages,setMessages] = useState([
+{role:"bot",text:"Hi 👋 I'm Harry's AI assistant. How can I help you?"}
+])
+const [input,setInput] = useState("")
 
-const [city,setCity]=useState("")
-const [data,setData]=useState<any>(null)
-const [time,setTime]=useState("")
+const sendMessage = () => {
 
-useEffect(()=>{
-setInterval(()=>{
-const now=new Date()
-setTime(now.toLocaleTimeString())
-},1000)
-},[])
+if(!input) return
 
-const searchWeather=async()=>{
+const newMessages = [
+...messages,
+{role:"user",text:input}
+]
 
-const res=await fetch(
-`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API}&units=metric`
-)
+setMessages(newMessages)
 
-const weather=await res.json()
+setTimeout(()=>{
 
-setData(weather)
+setMessages([
+...newMessages,
+{role:"bot",text:"I'm a demo assistant. Soon I will have real AI replies."}
+])
+
+},600)
+
+setInput("")
 
 }
 
 return(
 
-<div style={{
+<>
 
-minHeight:"100vh",
-width:"100%",
-background:"linear-gradient(180deg,#020617,#0f172a,#020617)",
+{/* Floating Button */}
+
+<div
+onClick={()=>setOpen(!open)}
+style={{
+position:"fixed",
+bottom:"30px",
+right:"30px",
+width:"60px",
+height:"60px",
+borderRadius:"50%",
+background:"#22c55e",
 display:"flex",
-flexDirection:"column",
-justifyContent:"center",
 alignItems:"center",
-color:"white",
-position:"relative",
-overflow:"hidden"
+justifyContent:"center",
+cursor:"pointer",
+boxShadow:"0 0 20px #22c55e",
+zIndex:999
+}}
+>
 
-}}>
+💬
 
-{/* Neon Clock */}
-
-<div style={{
-
-position:"absolute",
-top:"25px",
-right:"40px",
-fontSize:"36px",
-fontFamily:"monospace",
-color:"#ff2d55",
-textShadow:"0 0 10px red,0 0 20px red"
-
-}}>
-{time}
 </div>
 
+{/* Chat Window */}
 
-{/* Sun background */}
+{open && (
 
-<div style={{
-
-position:"absolute",
-top:"120px",
-right:"150px",
-width:"180px",
-height:"180px",
-borderRadius:"50%",
-background:"radial-gradient(circle,#fde047,#facc15,#f97316)",
-boxShadow:"0 0 120px #facc15",
-opacity:0.7,
-zIndex:0
-
-}}></div>
-
-
-{/* Main Weather Card */}
-
-<div style={{
-
-width:"520px",
-padding:"40px",
-borderRadius:"20px",
-background:"rgba(15,23,42,0.85)",
-boxShadow:"0 0 60px rgba(56,189,248,0.6)",
-textAlign:"center",
-zIndex:1
-
-}}>
-
-<h1 style={{
-fontSize:"40px",
-color:"#38bdf8",
-marginBottom:"20px"
-}}>
-ʜᴀʀʀʏ Weather Tool
-</h1>
-
-
-<div style={{
+<div
+style={{
+position:"fixed",
+bottom:"100px",
+right:"30px",
+width:"320px",
+height:"420px",
+background:"#020617",
+borderRadius:"16px",
+boxShadow:"0 0 30px rgba(0,255,150,0.4)",
 display:"flex",
-gap:"10px",
-justifyContent:"center"
-}}>
+flexDirection:"column",
+overflow:"hidden",
+zIndex:999
+}}
+>
+
+{/* Header */}
+
+<div
+style={{
+padding:"12px",
+background:"#0f172a",
+color:"white",
+fontWeight:"bold",
+textAlign:"center"
+}}
+>
+
+Harry AI Assistant
+
+</div>
+
+{/* Messages */}
+
+<div
+style={{
+flex:1,
+padding:"10px",
+overflowY:"auto",
+color:"white"
+}}
+>
+
+{messages.map((m,i)=>(
+
+<div
+key={i}
+style={{
+marginBottom:"10px",
+textAlign:m.role==="user" ? "right" : "left"
+}}
+>
+
+<span
+style={{
+background:m.role==="user" ? "#22c55e" : "#1e293b",
+padding:"8px 12px",
+borderRadius:"12px",
+display:"inline-block"
+}}
+>
+
+{m.text}
+
+</span>
+
+</div>
+
+))}
+
+</div>
+
+{/* Input */}
+
+<div
+style={{
+display:"flex",
+borderTop:"1px solid #334155"
+}}
+>
 
 <input
-
-value={city}
-onChange={(e)=>setCity(e.target.value)}
-placeholder="Enter city"
-
+value={input}
+onChange={(e)=>setInput(e.target.value)}
+placeholder="Type message..."
 style={{
-
-padding:"14px",
-width:"260px",
-borderRadius:"10px",
-border:"1px solid #38bdf8",
+flex:1,
+padding:"10px",
+border:"none",
 background:"#020617",
-color:"white",
-fontSize:"16px"
-
+color:"white"
 }}
-
 />
 
 <button
-
-onClick={searchWeather}
-
+onClick={sendMessage}
 style={{
-
-padding:"14px 25px",
-borderRadius:"10px",
+padding:"10px 14px",
+background:"#22c55e",
 border:"none",
-background:"#38bdf8",
-cursor:"pointer",
-fontSize:"16px"
-
+cursor:"pointer"
 }}
-
 >
-Search
+
+Send
+
 </button>
 
 </div>
-
-
-{data && data.main && (
-
-<div style={{
-marginTop:"35px"
-}}>
-
-<h2 style={{fontSize:"26px"}}>{data.name}</h2>
-
-<img
-src={`https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`}
-/>
-
-<h1 style={{
-fontSize:"70px",
-margin:"10px 0"
-}}>
-{data.main.temp}°C
-</h1>
-
-<p style={{fontSize:"20px"}}>
-{data.weather[0].main}
-</p>
-
-<p>
-Humidity {data.main.humidity}%
-</p>
 
 </div>
 
 )}
 
-</div>
-
-</div>
+</>
 
 )
 
