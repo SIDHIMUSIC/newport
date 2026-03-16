@@ -5,14 +5,16 @@ import { useState } from "react"
 export default function ChatBot() {
 
 const [open,setOpen] = useState(false)
+
 const [messages,setMessages] = useState([
 {role:"bot",text:"Hi 👋 I'm Harry's AI assistant. How can I help you?"}
 ])
+
 const [input,setInput] = useState("")
 
 const sendMessage = () => {
 
-if(!input) return
+if(!input.trim()) return
 
 const newMessages = [
 ...messages,
@@ -45,7 +47,7 @@ onClick={()=>setOpen(!open)}
 style={{
 position:"fixed",
 bottom:"30px",
-right:"30px",
+left:"30px",
 width:"60px",
 height:"60px",
 borderRadius:"50%",
@@ -55,12 +57,11 @@ alignItems:"center",
 justifyContent:"center",
 cursor:"pointer",
 boxShadow:"0 0 20px #22c55e",
-zIndex:999
+zIndex:999,
+fontSize:"22px"
 }}
 >
-
 💬
-
 </div>
 
 {/* Chat Window */}
@@ -71,7 +72,7 @@ zIndex:999
 style={{
 position:"fixed",
 bottom:"100px",
-right:"30px",
+left:"30px",
 width:"320px",
 height:"420px",
 background:"#020617",
@@ -92,11 +93,26 @@ padding:"12px",
 background:"#0f172a",
 color:"white",
 fontWeight:"bold",
-textAlign:"center"
+display:"flex",
+justifyContent:"space-between",
+alignItems:"center"
 }}
 >
 
-Harry AI Assistant
+<span>Harry AI Assistant</span>
+
+<button
+onClick={()=>setOpen(false)}
+style={{
+background:"none",
+border:"none",
+color:"white",
+fontSize:"18px",
+cursor:"pointer"
+}}
+>
+✖
+</button>
 
 </div>
 
@@ -152,6 +168,7 @@ borderTop:"1px solid #334155"
 <input
 value={input}
 onChange={(e)=>setInput(e.target.value)}
+onKeyDown={(e)=>e.key==="Enter" && sendMessage()}
 placeholder="Type message..."
 style={{
 flex:1,
@@ -168,12 +185,11 @@ style={{
 padding:"10px 14px",
 background:"#22c55e",
 border:"none",
-cursor:"pointer"
+cursor:"pointer",
+color:"white"
 }}
 >
-
 Send
-
 </button>
 
 </div>
