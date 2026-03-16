@@ -2,48 +2,86 @@
 
 import { useState } from "react"
 
-export default function ChatBot() {
+export default function ChatBot(){
 
-const [open,setOpen] = useState(false)
-const [typing,setTyping] = useState(false)
+const API_KEY="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"
 
-const [messages,setMessages] = useState([
-{role:"bot",text:"Hi 👋 I'm Harry's AI assistant. How can I help you?"}
+const [open,setOpen]=useState(false)
+const [typing,setTyping]=useState(false)
+
+const [messages,setMessages]=useState([
+{role:"bot",text:"Hi 👋 I'm Harry's AI assistant. Ask me anything."}
 ])
 
-const [input,setInput] = useState("")
+const [input,setInput]=useState("")
 
-const sendMessage = () => {
+const sendMessage=async()=>{
 
 if(!input.trim()) return
 
-const newMessages = [
-...messages,
-{role:"user",text:input}
-]
+const userMsg=input
 
-setMessages(newMessages)
+setMessages(prev=>[
+...prev,
+{role:"user",text:userMsg}
+])
+
+setInput("")
 setTyping(true)
 
-setTimeout(()=>{
+try{
+
+const res=await fetch("https://api.openai.com/v1/chat/completions",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json",
+"Authorization":`Bearer ${API_KEY}`
+},
+
+body:JSON.stringify({
+
+model:"gpt-4o-mini",
+
+messages:[
+{role:"system",content:"You are Harry's website AI assistant."},
+{role:"user",content:userMsg}
+]
+
+})
+
+})
+
+const data=await res.json()
+
+const reply=data.choices?.[0]?.message?.content || "AI error"
 
 setTyping(false)
 
-setMessages([
-...newMessages,
-{role:"bot",text:"I'm a demo AI assistant. Soon I will have real AI replies."}
+setMessages(prev=>[
+...prev,
+{role:"bot",text:reply}
 ])
 
-},1200)
+}catch{
 
-setInput("")
+setTyping(false)
+
+setMessages(prev=>[
+...prev,
+{role:"bot",text:"Error connecting to AI"}
+])
+
+}
+
 }
 
 return(
 
 <>
 
-{/* META STYLE FLOATING AI BUTTON */}
+{/* META STYLE FLOATING BUTTON */}
 
 <div
 onClick={()=>setOpen(!open)}
@@ -69,6 +107,7 @@ boxShadow:"0 0 25px rgba(0,255,200,0.8)"
 </svg>
 
 </div>
+
 
 {/* CHAT WINDOW */}
 
@@ -122,6 +161,7 @@ cursor:"pointer"
 
 </div>
 
+
 {/* MESSAGES */}
 
 <div
@@ -160,7 +200,7 @@ display:"inline-block"
 
 ))}
 
-{/* TYPING ANIMATION */}
+{/* TYPING DOTS */}
 
 {typing && (
 
@@ -175,9 +215,9 @@ display:"inline-block"
 }}
 >
 
-<span style={{animation:"blink 1s infinite"}}>●</span>
-<span style={{animation:"blink 1s infinite 0.2s",marginLeft:"4px"}}>●</span>
-<span style={{animation:"blink 1s infinite 0.4s",marginLeft:"4px"}}>●</span>
+<span>●</span>
+<span style={{marginLeft:"4px"}}>●</span>
+<span style={{marginLeft:"4px"}}>●</span>
 
 </span>
 
@@ -186,6 +226,7 @@ display:"inline-block"
 )}
 
 </div>
+
 
 {/* INPUT */}
 
@@ -200,7 +241,7 @@ borderTop:"1px solid #334155"
 value={input}
 onChange={(e)=>setInput(e.target.value)}
 onKeyDown={(e)=>e.key==="Enter" && sendMessage()}
-placeholder="Type message..."
+placeholder="Ask AI..."
 style={{
 flex:1,
 padding:"10px",
